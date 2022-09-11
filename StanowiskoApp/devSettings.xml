@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Devices_Table>
+	<SMU>
+		<SMU Type = "SMU" />
+		<SMU Model = "B2911B" />
+		<SMU Serial_Number = "MY61390107" />
+		<SMU Manufacturer = "Keysight Technologies" />
+		<SMU Usb_Address = "USB0::10893::37889::MY61390107::0::INSTR" />
+	</SMU>
+	<TIC100>
+		<TIC100 Type = "Turbo Instrument Controller" />
+		<TIC100 Model = "TIC100" />
+		<TIC100 Sw_Ver = "170546586" />
+		<TIC100 Serial_Number = "D39700640T" />
+		<TIC100 Manufacturer = "EDWARDS" />
+		<TIC100 Com_Port = "COM4" />
+		<TIC100 Baud_Rate = "9600" />
+		<TIC100 Stop_Bits = "1" />
+		<TIC100 Data_Bits = "8" />
+		<TIC100 Parity = "NO" />
+		<TIC100 Timeout = "1000" />
+	</TIC100>
+	<TC>
+		<TC Type = "Temperature Controller" />
+		<TC Model = "336" />
+		<TC Serial_Number = "1336" />
+		<TC Manufacturer = "Lake Shore" />
+		<TC Com_Port = "COM9" />
+	</TC>
+</Devices_Table>

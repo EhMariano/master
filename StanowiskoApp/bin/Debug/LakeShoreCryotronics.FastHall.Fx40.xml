@@ -1,0 +1,2406 @@
+<doc>
+	<assembly>
+		<name>LakeShoreCryotronics.FastHall.Fx40</name>
+	</assembly>
+	<members>
+		<member name="T:LakeShoreCryotronics.FastHall.FastHall">
+			<summary>Main driver class.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.#ctor(System.String,System.Boolean,System.Boolean)">
+			<summary>Creates a new instance of the driver and opens and I/O session with the instrument.</summary>
+			<param name="resourceName">An IVI logical name or an instrument specific string that identifies the address of the instrument, such as a VISA resource descriptor string.</param>
+			<param name="idQuery">Specifies whether to verify the ID of the instrument.</param>
+			<param name="reset">Specifies whether to reset the instrument.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.#ctor(System.String,System.Boolean,System.Boolean,System.String)">
+			<summary>Creates a new instance of the driver and opens and I/O session with the instrument.</summary>
+			<param name="resourceName">An IVI logical name or an instrument specific string that identifies the address of the instrument, such as a VISA resource descriptor string.</param>
+			<param name="idQuery">Specifies whether to verify the ID of the instrument.</param>
+			<param name="reset">Specifies whether to reset the instrument.</param>
+			<param name="options">A string that allows the user to specify the initial values of certain inherent attributes.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.#ctor(System.String,System.Boolean,System.Boolean,Ivi.Driver.LockType,System.String,System.String)">
+			<summary>Creates a new instance of the driver and opens and I/O session with the instrument.</summary>
+			<param name="resourceName">An IVI logical name or an instrument specific string that identifies the address of the instrument, such as a VISA resource descriptor string.</param>
+			<param name="idQuery">Specifies whether to verify the ID of the instrument.</param>
+			<param name="reset">Specifies whether to reset the instrument.</param>
+			<param name="lockType">Specifies whether to use process-wide locking or machine-wide locking.</param>
+			<param name="accessKey">Specifies a user-selectable access key to identify the lock.  Driver instances that are created with the same accessKey will be protected from simultaneous access by multiple threads within a process or across processes, depending upon the value of the lockType parameter.</param>
+			<param name="options">A string that allows the user to specify the initial values of certain inherent attributes.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Close">
+			<summary>Closes the I/O session to the instrument, as well as other unmanaged  resources.  The behavior is the same as IDisposable.Dispose.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.GetService(System.Type)">
+			<summary>Gets the service object of the specified type.  Typically, this is an interface supported by the driver.</summary>
+			<param name="serviceType">The type object of the service to get.  Typically, this is the type of an interface supported by the driver.</param>
+			<returns>A service object of the specified type.  Null is returned if there is no service object of the specified type.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Dispose">
+			<summary>Performs driver-defined tasks associated with freeing, releasing, or resetting unmanaged resources.  Calling this method is equivalent to calling the driver's Close method.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.ResetInterchangeCheck">
+			<summary>Resets the interchangeability checking algorithms of the driver  so that methods and properties that executed prior to calling this  method have no affect on whether future calls to the driver  generate interchangeability warnings.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.InvalidateAllAttributes">
+			<summary>Invalidates all of the driver's cached values.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.GetSupportedInstrumentModels">
+			<summary>Returns the list of instrument models that the IVI specific  driver can control.  The string does not include an abbreviation  for the manufacturer if it is the same for all models.</summary>
+			<returns>Array of instrument models.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.GetGroupCapabilities">
+			<summary>Returns the list of the class capability groups implemented by the  driver.  Capability group names are documented in the IVI class  specifications.  If the driver is not class compliant, the driver  returns an empty array.</summary>
+			<returns>Array of class capability groups.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.ErrorQuery">
+			<summary>Queries the instrument and returns instrument specific error  information.</summary>
+			<returns>A struct that includes the instrument error code and error message.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.SelfTest">
+			<summary>Performs an instrument self test, waits for the instrument to  complete the test, and queries the instrument for the results.   If the instrument passes the test, TestResult is zero and  TestMessage is 'Self test passed'.</summary>
+			<returns>A struct that includes the numeric result from the self test operation (0 = no error, e.g. the test passed) and self test status message.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Disable">
+			<summary>Quickly places the instrument in a state where it has no, or  minimal, effect on the external system to which it is connected.   This state is not necessarily a known state.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.ResetWithDefaults">
+			<summary>Does the equivalent of Reset and then, (1) disables class  extension capability groups, (2) sets properties to initial  values defined by class specs, and (3) configures the driver  to option string settings used in the driver constructor.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Places the instrument in a known state and configures instrument  options on which the IVI specific driver depends (for example,  enabling/disabling headers).  For an IEEE 488.2 instrument,  Reset sends the command string *RST to the instrument.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Lock">
+			<summary>Attempts to acquire a synchronization lock on this instance of the driver.  The calling thread is blocked indefinitely until the lock is acquired. This method is useful for gaining exclusive access to the driver instance across a series of methods calls.  The user must call the Unlock method on the returned lock to relinquish the lock and allow other threads to access this instance of the driver.</summary>
+			<returns>A reference to the acquired lock.  Unlock is called on the returned reference.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Lock(Ivi.Driver.PrecisionTimeSpan)">
+			<summary>Attempts to acquire a synchronization lock on this instance of the driver.  The calling thread is blocked until either the lock is acquired or maxTime expires.  If the lock is not acquired within the interval specified by maxTime, an exception is thrown.  This method is useful for gaining exclusive access to the driver instance across a series of methods calls.  The user must call the Unlock method on the returned lock to relinquish the lock and allow other threads to access this instance of the driver.</summary>
+			<param name="maxTime">Specifies the maximum amount of time to wait to acquire the lock.</param>
+			<returns>A reference to the acquired lock.  Unlock is called on the returned reference.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.ReadBytes">
+			<summary>Reads a complete response from the instrument.</summary>
+			<returns>An array of bytes returned by the device.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.ReadString">
+			<summary>Reads a complete response from the instrument and returns it as a string.</summary>
+			<returns>A string returned by the device.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.WriteBytes(System.Byte[])">
+			<summary>Write an array of bytes to the device.</summary>
+			<param name="Buffer">The array of bytes to be written to the device.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.WriteString(System.String)">
+			<summary>Write a string to the device.</summary>
+			<param name="Data">The string to be written to the device.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.CLS">
+			<summary>Clear status command.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.WAI">
+			<summary>Prohibits the instrument from executing any new commands until all pending commands have executed. Equivalent of calling, *WAI</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double)">
+			<summary>Performs a contact check measurement on contact pairs 5-6, 5-1, 5-2, 5-3, 5-4, and 6-1.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+			<param name="minimumRSquared">The minimum R² desired, Default = 0.9999.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample.  MINimum = 0.000001 s MAXimum = 1 s DEFault = 1/60 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.All">
+			<summary>Retrieves the results of the last run contact check measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double)">
+			<summary>Performs a contact check measurement on contact pairs 1-2, 2-3, 3-4, and 4-1.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+			<param name="minimumRSquared">The minimum R² desired, Default = 0.9999.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.000001 s MAXimum = 1 s DEFault = 1/60 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Optimize(System.Double,System.Double,System.Int32,System.Double,System.Double)">
+			<summary>Automatically determines excitation value and ranges. Then runs contact check on all 4 pairs.</summary>
+			<param name="maxCurrent">A 'not to exceed' output current value for the auto algorithm to use.  Minimum = 1 µA, Maximum = 100 mA, Default = 100 mA</param>
+			<param name="maxVoltage">A 'not to exceed' output voltage value for the auto algorithm to use.  Minimum = 1 V, Maximum = 10 V, Default = 10 V</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end.  Minimum = 2, Maximum = 100, Default = 11</param>
+			<param name="minimumRSquared">The minimum R² desired, Default = 0.9999.</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.All">
+			<summary>Retrieves the results of the last run FastHall™ measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.StartLink(System.Double,System.Double,System.Int32,System.Double,System.Int32,System.Double)">
+			<summary>Performs a FastHall™ measurement that uses the last run contact check measurement's excitation type, excitation range, compliance limit, blanking time, sampling time, and the largest absolute value of the start and end excitation values along with the last run resistivity measurement's resistivity average and sample thickness if available.</summary>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100 .</param>
+			<param name="minimumHallVoltageSnr">The desired signal-to-noise ratio of the measurement calculated using average Hall voltage/error of mean 1 to 1000, or INFinity.  Default = 30.</param>
+			<param name="numberOfVoltageCompensationSamplesToAverage">The number of voltage compensation samples to average. Only applied for excitation type voltage.  Valid range of 1 to 120.  Default = 60</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.All">
+			<summary>Retrieves ALL the results, including individual samples, of the last run Four wire measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Boolean,System.Double,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a DC Hall measurement for a Hall bar sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+			<param name="resistivity">The resistivity of the sample in units of ohm*meters (bulk) of ohms per square (sheet). Used for calculations. Measure this value using the RESistivity SCPI subsystem. Defaults to not a number which will propagate through calculated values.  Default = NaN.  NOTE: When the resistivity is omitted or NaN, mobility is not calculated.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Continue">
+			<summary>Continues the DC Hall measurement if it’s in a waiting state.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.All">
+			<summary>Retrieves the results of the last run DC Hall measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Boolean,System.Double,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a DC Hall measurement for a van der Pauw sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+			<param name="resistivity">The resistivity of the sample in units of ohm*meters (bulk) of ohms per square (sheet). Used for calculations. Measure this value using the RESistivity SCPI subsystem. Defaults to not a number which will propagate through calculated values.  Default = NaN.  NOTE: When the resistivity is omitted or NaN, mobility is not calculated.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.All">
+			<summary>Retrieves all of the results of the last run resistivity measurement, serialized as JSON, including raw samples.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement on a Hall bar sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="width">The width of the sample in meters. Greater than 0.</param>
+			<param name="seperation">The distance between the sample’s arms in meters.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100 .</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement for a van der Pauw sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100 .</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.StartLink(System.Double,System.Double,System.Double,System.Int32)">
+			<summary>Performs a resistivity measurement (for a van der Pauw sample) that uses the last run contact check measurement's excitation type, compliance limit, blanking time, excitation range, and the largest absolute value of the start and end excitation values.</summary>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000. Default = 100</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.FactoryReset">
+			<summary>Performs an instrument factory reset.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Preset">
+			<summary>Performs a reset.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Preset">
+			<summary>Initializes the values of the Operation Status register and Questionable Status register.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Clear">
+			<summary>Clears all errors in the queue.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Optimize">
+			<summary>Automatically determines excitation value and ranges. Then runs contact check on all 4 pairs.  Runs with all defaults</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Int32)">
+			<summary>Performs a contact check measurement on contact pairs 5-6, 5-1, 5-2, 5-3, 5-4, and 6-1.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Int32)">
+			<summary>Performs a contact check measurement on contact pairs 1-2, 2-3, 3-4, and 4-1.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Int32,System.Double,System.Int32,System.Double)">
+			<summary>Performs a FastHall™ measurement</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationmeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100</param>
+			<param name="resistivity">The resistivity of the sample in units of ohm*meters (bulk) of ohms per square (sheet). Used for calculations. Measure this value using the RESistivity SCPI subsystem. Defaults to not a number which will propagate through calculated values.  Default = NaN</param>
+			<param name="blankingTime">The time, in seconds, to wait for hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="numberOfVoltageCompensationSamplesToAverage">The number of voltage compensation samples to average. Only applied forexcitation type voltage. 1 to 120. Default = 60</param>
+			<param name="sampleThickness">Thickness of the sample in meters. 0 to 10e-3 m. Default = 0 m</param>
+			<param name="minimumHallVoltageSnr">The desired signal-to-noise ratio of the measurement calculated using average Hall voltage/error of mean 1 to 1000, or INFinity. Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double)">
+			<summary>Performs a FastHall™ measurement.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.StartLink(System.Double)">
+			<summary>Performs a FastHall™ measurement that uses the last run contact check measurement's excitation type, excitation range, compliance limit, blanking time, sampling time, and the largest absolute value of the start and end excitation values along with the last run resistivity measurement's resistivity average and sample thickness if available.  With Defaults</summary>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(System.Int32,System.Int32,System.Int32,System.Int32,LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Boolean,System.Double)">
+			<summary>Performs a four wire measurement. Excitation is sourced from contact point 1 to contact point 2. Voltage is measured/senses between contact point 3 and contact point 4.</summary>
+			<param name="contactPoint1">Excitation +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 2.</param>
+			<param name="contactPoint2">Excitation -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 1.</param>
+			<param name="contactPoint3">Voltage measure/sense +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 4.</param>
+			<param name="contactPoint4">Voltage measure/sense -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 3.</param>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="excitationmeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="blankingTime">The time, in seconds, to wait for hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity. Default = 30</param>
+			<param name="excitationReversal">True = Reverse the excitation to generate the resistance. False = no excitation reversal</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(System.Int32,System.Int32,System.Int32,System.Int32,LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Boolean)">
+			<summary>Performs a four wire measurement. Excitation is sourced from contact point 1 to contact point 2. Voltage is measured/senses between contact point 3 and contact point 4.  With Auto ranges and Defaults</summary>
+			<param name="contactPoint1">Excitation +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 2.</param>
+			<param name="contactPoint2">Excitation -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 1.</param>
+			<param name="contactPoint3">Voltage measure/sense +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 4.</param>
+			<param name="contactPoint4">Voltage measure/sense -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 3.</param>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="excitationReversal">True = Reverse the excitation to generate the resistance. False = no excitation reversal</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Int32,System.Double,System.Boolean)">
+			<summary>Performs a DC Hall measurement for a Hall bar sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Int32,System.Double,System.Boolean)">
+			<summary>Performs a DC Hall measurement for a van der Pauw sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement on a Hall bar sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="width">The width of the sample in meters. Greater than 0.</param>
+			<param name="seperation">The distance between the sample’s arms in meters.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement for a van der Pauw sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.StartLink">
+			<summary>Performs a resistivity measurement (for a van der Pauw sample) that uses the last run contact check measurement's excitation type, compliance limit, blanking time, excitation range, and the largest absolute value of the start and end excitation values.  With Auto ranges and Defaults</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run contact check measurement results serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32,System.Int32,System.Int32)">
+			<summary>Retrieves the results of a single point in the contact check measurement IV curve for a given contact pair.</summary>
+			<param name="contactPoint1">Contact pair point 1.</param>
+			<param name="contactPoint2">Contact pair point 2.</param>
+			<param name="curvePoint">IV curve point, zero indexed.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves summary results of the last run contact check measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run FastHall™ measurement results serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run FastHall™ measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves summary results of the last run FastHall™ measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run four wire measurement results serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves summary results of the last run four wire measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run DC Hall measurement results, serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run DC Hall measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary(System.Boolean)">
+			<summary>Retrieves summary results of the last run DC Hall measurement, serialized as JSON.</summary>
+			<param name="includeGeometries">Optional, include summary data for C and D geometries.  Defaults to False.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run resistivity measurement results, serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32)">
+			<summary>Retrieves the resistivity and F value of both geometries A and B along with all measurements for a given sample.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves summary results of the last run resistivity measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves the results of the last run four wire measurement.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32,System.Int32,System.Int32)">
+			<summary>Retrieves the results of a single point in the contact check measurement IV curve for a given contact pair.</summary>
+			<param name="contactPoint1">Contact pair point 1</param>
+			<param name="contactPoint2">Contact pair point 2</param>
+			<param name="curvePoint">IV curve point, zero indexed</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.ASetup">
+			<summary>Retrieves the last run contact check measurement’s auto optimizationSetup.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves the results of the last run contact check measurement.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run FastHall™ measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Raw(System.Int32)">
+			<summary>Retrieves the excitation setpoint, measured current, measured voltage, and compliance status for negative and positive excitations in both negative and positive field configurations from a given sample taken during the last run FastHall™ measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves the results of the last run FastHall™ measurement.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run DC Hall measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Raw(System.Int32,LakeShoreCryotronics.FastHall.Geometry)">
+			<summary>Retrieves the measured current, measured voltage, and compliance status for negative and positive excitations in both negative and positive field configurations from a given sample taken during the last run DC Hall measurement.  NOTE: If the measurement did not include field reversal, then 'negative field' parameters will not be returned.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<param name="geometry">The geometry, C or D</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves the results of the last run DC Hall measurement.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Data(System.Int32)">
+			<summary>Retrieves the resistivity and F value of both geometries A and B for a given sample.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Raw(System.Double,LakeShoreCryotronics.FastHall.ContactConfig)">
+			<summary>Retrieves the measured voltage, current, and calculated current reversed resistance for a given contact configuration and sample.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<param name="contactConfiguration">van der Pauw: R2134, R3241, R4312, or R1423; Hall bar: R5614 or R5623</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Summary">
+			<summary>Retrieves the results of the last run resistivity measurement.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Diagnostics">
+			<summary>Retrieves optimization diagnostics of the last run contact check measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Reset">
+			<summary>Cancels any running blanking time calculations.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.JSON(System.Boolean)">
+			<summary>Returns the JSON results of calculating the optimal blanking time.</summary>
+			<param name="pretty">Optional, pretty format JSON response. Defaults to False.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.FastHall.Start(System.Int32,System.Int32,System.Int32,System.Int32)">
+			<summary>Calculates the optimal blanking time for a contact check on this sample.</summary>
+			<param name="contactPoint1">Excitation +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 2.</param>
+			<param name="contactPoint2">Excitation -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 1.</param>
+			<param name="contactPoint3">Voltage measure/sense +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 4.</param>
+			<param name="contactPoint4">Voltage measure/sense -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 3.</param>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.DriverOperation">
+			<summary>Reference to the IIviDriverOperation interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Identity">
+			<summary>Reference to the IIviDriverIdentity interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Utility">
+			<summary>Reference to the IIviDriverUtility interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.LogicalName">
+			<summary>Logical Name identifies a driver session in the Configuration Store.   If Logical Name is not empty, the driver was initialized from  information in the driver session.  If it is empty, the driver was  initialized without using the Configuration Store.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.IOResourceDescriptor">
+			<summary>The resource descriptor specifies the connection to a physical  device.  It is either specified in the Configuration Store or  passed in the resource name at initialization.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Cache">
+			<summary>Drivers may choose to always cache some instrument settings, never  cache others, and optionally cache others, to avoid unecessary I/O  to the instrument.  If True, the driver caches optionally cached  instrument settings.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.QueryInstrumentStatus">
+			<summary>If True, the driver queries the instrument status at the end of  each method or property that performs I/O to the instrument.  If  an error is reported, use ErrorQuery to retrieve error messages  one at a time from the instrument.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.RangeCheck">
+			<summary>Drivers may choose to always validate some property/parameter  values, never validate others, and optionally validate others,  to avoid sending invalid commands to the instrument.  If True,  the driver performs optional validations.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Simulate">
+			<summary>If True, the driver does not perform I/O to the instrument, and  returns simulated values for output parameters.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.DriverSetup">
+			<summary>The driver setup string.  It is either specified in the  Configuration Store or passed via the optionString parameter to a driver constructor.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.InstrumentManufacturer">
+			<summary>The name of the manufacturer reported by the physical instrument.   If Simulation is enabled or the instrument is not capable of  reporting the name of the manufacturer, a string is returned that  explains the condition.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.InstrumentModel">
+			<summary>The model number or name reported by the physical instrument.   If Simulation is enabled or the instrument is not capable of  reporting the model number or name, a string is returned that  explains the condition.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.InstrumentFirmwareRevision">
+			<summary>The firmware revision reported by the physical instrument.  If  Simulation is enabled or the instrument is not capable of  reporting the firmware revision, a string is returned that  explains the condition.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Identifier">
+			<summary>The case-sensitive unique identifier of the implementing IVI.NET  instrument driver.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.SpecificationMajorVersion">
+			<summary>For IVI class-compliant drivers, the major version number of the  instrument class specification.  If the driver is not class  compliant, the driver returns zero.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.SpecificationMinorVersion">
+			<summary>For IVI class-compliant drivers, the minor version number of the  instrument class specification.  If the driver is not class  compliant, the driver returns zero.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Description">
+			<summary>A brief description of the implementing component.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Revision">
+			<summary>The revision of the implementing component.  Refer to IVI 3.2,  Section 3.1.2.2, for a description of revision syntax and semantics.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Vendor">
+			<summary>The name of the vendor that supplies the implementing component.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.System">
+			<summary>Reference to the IFastHall interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.IOTimeout">
+			<summary>Gets or sets the I/O timeout.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.DirectIO">
+			<summary>Reference to the IMessageBasedFormattedIO interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.ESE">
+			<summary>Prohibits the instrument from executing any new commands until all pending commands have executed. Equivalent of calling, *WAI</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.ESR">
+			<summary>Gets the standard event status register. Equivalent of calling *ESR?</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.SRE">
+			<summary>Set/get the service request enable. Equivalent of calling *SRE</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.STB">
+			<summary>Reads the status byte. Equivalent of calling *STB?</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.TST">
+			<summary>Reads the status based on test done at power up.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Analog">
+			<summary>Reference to the IFastHallAnalog interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Digital">
+			<summary>Reference to the IFastHallDigital interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.CCheck">
+			<summary>Reference to the IFastHallCCheck interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.FastH">
+			<summary>Reference to the IFastHallFastH interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Result">
+			<summary>Reference to the IFastHallFastHResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.JSON">
+			<summary>Reference to the IFastHallFastHResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Result">
+			<summary>Reference to the IFastHallCCheckResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.JSON">
+			<summary>Reference to the IFastHallCCheckResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Input">
+			<summary>Reference to the IFastHallAnalogInput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Output">
+			<summary>Reference to the IFastHallAnalogOutput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.InputFunction">
+			<summary>Queries the available settable modes for the analog input.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.InputLevel">
+			<summary>Queries the level of the analog input.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.OutputFunction">
+			<summary>Queries the available settable functions for the analog output.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.OutputSetting">
+			<summary>Sets or queries the level of the analog output.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.HBAR">
+			<summary>Reference to the IFastHallCCheckHBAR interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.VDP">
+			<summary>Reference to the IFastHallCCheckVDP interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Running">
+			<summary>Indicates if the contact check measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Input">
+			<summary>Reference to the IFastHallDigitalInput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Output">
+			<summary>Reference to the IFastHallDigitalOutput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.InputSetting">
+			<summary>Returns the bit-wise representation of the input states.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.OutputSetting">
+			<summary>Configures the output states.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Running">
+			<summary>Indicates if the FastHall™ measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.FourWire">
+			<summary>Reference to the IFastHallFourWire interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.JSON">
+			<summary>Reference to the IFastHallFastHResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Result">
+			<summary>Reference to the IFastHallFastHResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Running">
+			<summary>Indicates if the four wire measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.DCHall">
+			<summary>Reference to the IFastHallDCHall interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.HBAR">
+			<summary>Reference to the IFastHallDCHallHBAR interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.VDP">
+			<summary>Reference to the IFastHallDCHallVDP interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Result">
+			<summary>Reference to the IFastHallDCHallResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.JSON">
+			<summary>Reference to the IFastHallDCHallResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Running">
+			<summary>Indicates if the DC Hall measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Waiting">
+			<summary>Indicates if the DC Hall measurement is waiting.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Resistivity">
+			<summary>Reference to the IFastHallResistivity interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.HBAR">
+			<summary>Reference to the IFastHallResistivityHBAR interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Result">
+			<summary>Reference to the IFastHallResistivityResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.JSON">
+			<summary>Reference to the IFastHallResistivityResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Running">
+			<summary>Indicates if the resistivity measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.VDP">
+			<summary>Reference to the IFastHallResistivityVDP interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Autodatetime">
+			<summary>When set to true, the instrument will set its date and time if connected to the internet.  Set to false to set the time manually.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Beeper">
+			<summary>Reference to the IFastHallSystemBeeper interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Volume">
+			<summary>Sets/gets the volume of the instruments internal speakers.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.FrontPanelLock">
+			<summary>Sets/gets whether the instruments front panel is locked or not.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.SCPIVersion">
+			<summary>Returns the SCPI version the instrument adheres to.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Status">
+			<summary>Reference to the IFastHallStatus interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Operation">
+			<summary>Reference to the IFastHallStatusOperation interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Condition">
+			<summary>Gets the value of the Operation Status Condition Register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Enable">
+			<summary>Sets/gets the value of the Operation Status enable register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Event">
+			<summary>This queries the operation status event register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Questionable">
+			<summary>Reference to the IFastHallStatusOperationQuestionable interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Condition">
+			<summary>Sets/gets the value of the Questionable Status Condition Register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Enable">
+			<summary>Sets/gets the value of the Questionable Status enable register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Event">
+			<summary>This queries the Questionable status event register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Error">
+			<summary>Reference to the IFastHallSystemError interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.All">
+			<summary>Returns a comma seperated list of all errors in the queue and removes them.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Count">
+			<summary>Returns the count of errors in the queue.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Next">
+			<summary>Returns the next error in the internal buffer and removes it.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.LSDateTime">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Standard">
+			<summary>Reference to the IFastHallFourWireResultStandard interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Standard">
+			<summary>Reference to the IFastHallCCheckResultStandard interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Standard">
+			<summary>Reference to the IFastHallFastHResultStandard interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Standard">
+			<summary>Reference to the IFastHallDCHallResultStandard interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Standard">
+			<summary>Reference to the IFastHallResistivityResultStandard interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Points">
+			<summary>Retrieves the number of points in the results list. Use in conjunction with RESistivity:RESult[:STANdard]:DATA? and RESistivity:RESult[:STANdard]:RAW? queries.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Points">
+			<summary>Retrieves the number of points in the results list. Use in conjunction with FASThall:RESult[:STANdard]:DATA? and FASThall:RESult[:STANdard]:RAW? queries.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Points">
+			<summary>Retrieves the number of points in the results list. Use in conjunction with HALl[:DC]:RESult[:STANdard]:DATA? and HALl[:DC]:RESult[:STANdard]:RAW? queries</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Blanking">
+			<summary>Reference to the IFastHallCCheckBlanking interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Result">
+			<summary>Reference to the IFastHallCCheckBlankingResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FastHall.Running">
+			<summary>Indicates if the standalone blanking time calculation is running.</summary>
+		</member>
+		<member name="E:LakeShoreCryotronics.FastHall.FastHall.Warning">
+			<summary>Warning event.</summary>
+		</member>
+		<member name="E:LakeShoreCryotronics.FastHall.FastHall.Coercion">
+			<summary>Coercion record event.</summary>
+		</member>
+		<member name="E:LakeShoreCryotronics.FastHall.FastHall.InterchangeCheckWarning">
+			<summary>Interchange check warning event.</summary>
+		</member>
+		<member name="T:MindWorks.Nimbus.DriverNode">
+			<summary />
+		</member>
+		<member name="T:MindWorks.Nimbus.Driver">
+			<summary />
+		</member>
+		<member name="T:MindWorks.Nimbus.RepCap">
+			<summary />
+		</member>
+		<member name="T:MindWorks.Nimbus.RepCapCollection">
+			<summary />
+		</member>
+		<member name="T:MindWorks.Nimbus.RepCapCollection`1">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHall">
+			<summary>Root interface of driver hierarchy.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHall.CLS">
+			<summary>Clear status command.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHall.WAI">
+			<summary>Prohibits the instrument from executing any new commands until all pending commands have executed. Equivalent of calling, *WAI</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.System">
+			<summary>Reference to the IFastHall interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.ESE">
+			<summary>Prohibits the instrument from executing any new commands until all pending commands have executed. Equivalent of calling, *WAI</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.ESR">
+			<summary>Gets the standard event status register. Equivalent of calling *ESR?</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.SRE">
+			<summary>Set/get the service request enable. Equivalent of calling *SRE</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.STB">
+			<summary>Reads the status byte. Equivalent of calling *STB?</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.TST">
+			<summary>Reads the status based on test done at power up.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.Analog">
+			<summary>Reference to the IFastHallAnalog interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.Digital">
+			<summary>Reference to the IFastHallDigital interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.CCheck">
+			<summary>Reference to the IFastHallCCheck interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.FastH">
+			<summary>Reference to the IFastHallFastH interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.FourWire">
+			<summary>Reference to the IFastHallFourWire interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.DCHall">
+			<summary>Reference to the IFastHallDCHall interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.Resistivity">
+			<summary>Reference to the IFastHallResistivity interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHall.Status">
+			<summary>Reference to the IFastHallStatus interface.</summary>
+		</member>
+		<member name="T:MindWorks.Nimbus.IDriverNode">
+			<summary />
+		</member>
+		<member name="T:MindWorks.Nimbus.ICacheEquatable">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallSystem">
+			<summary>IFastHallSystem interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystem.ReadBytes">
+			<summary>Reads a complete response from the instrument.</summary>
+			<returns>An array of bytes returned by the device.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystem.ReadString">
+			<summary>Reads a complete response from the instrument and returns it as a string.</summary>
+			<returns>A string returned by the device.</returns>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystem.WriteBytes(System.Byte[])">
+			<summary>Write an array of bytes to the device.</summary>
+			<param name="Buffer">The array of bytes to be written to the device.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystem.WriteString(System.String)">
+			<summary>Write a string to the device.</summary>
+			<param name="Data">The string to be written to the device.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystem.FactoryReset">
+			<summary>Performs an instrument factory reset.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystem.Preset">
+			<summary>Performs a reset.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.IOTimeout">
+			<summary>Gets or sets the I/O timeout.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.DirectIO">
+			<summary>Reference to the IMessageBasedFormattedIO interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.Autodatetime">
+			<summary>When set to true, the instrument will set its date and time if connected to the internet.  Set to false to set the time manually.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.Beeper">
+			<summary>Reference to the IFastHallSystemBeeper interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.FrontPanelLock">
+			<summary>Sets/gets whether the instruments front panel is locked or not.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.SCPIVersion">
+			<summary>Returns the SCPI version the instrument adheres to.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.Error">
+			<summary>Reference to the IFastHallSystemError interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystem.LSDateTime">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallAnalog">
+			<summary>IFastHallAnalog interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallAnalog.Input">
+			<summary>Reference to the IFastHallAnalogInput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallAnalog.Output">
+			<summary>Reference to the IFastHallAnalogOutput interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDigital">
+			<summary>IFastHallDigital interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDigital.Input">
+			<summary>Reference to the IFastHallDigitalInput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDigital.Output">
+			<summary>Reference to the IFastHallDigitalOutput interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheck">
+			<summary>IFastHallCCheck interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheck.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheck.Result">
+			<summary>Reference to the IFastHallCCheckResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheck.HBAR">
+			<summary>Reference to the IFastHallCCheckHBAR interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheck.VDP">
+			<summary>Reference to the IFastHallCCheckVDP interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheck.Running">
+			<summary>Indicates if the contact check measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheck.Blanking">
+			<summary>Reference to the IFastHallCCheckBlanking interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFastH">
+			<summary>IFastHallFastH interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastH.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastH.StartLink(System.Double,System.Double,System.Int32,System.Double,System.Int32,System.Double)">
+			<summary>Performs a FastHall™ measurement that uses the last run contact check measurement's excitation type, excitation range, compliance limit, blanking time, sampling time, and the largest absolute value of the start and end excitation values along with the last run resistivity measurement's resistivity average and sample thickness if available.</summary>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100 .</param>
+			<param name="minimumHallVoltageSnr">The desired signal-to-noise ratio of the measurement calculated using average Hall voltage/error of mean 1 to 1000, or INFinity.  Default = 30.</param>
+			<param name="numberOfVoltageCompensationSamplesToAverage">The number of voltage compensation samples to average. Only applied for excitation type voltage.  Valid range of 1 to 120.  Default = 60</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastH.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Int32,System.Double,System.Int32,System.Double)">
+			<summary>Performs a FastHall™ measurement</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationmeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100</param>
+			<param name="resistivity">The resistivity of the sample in units of ohm*meters (bulk) of ohms per square (sheet). Used for calculations. Measure this value using the RESistivity SCPI subsystem. Defaults to not a number which will propagate through calculated values.  Default = NaN</param>
+			<param name="blankingTime">The time, in seconds, to wait for hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="numberOfVoltageCompensationSamplesToAverage">The number of voltage compensation samples to average. Only applied forexcitation type voltage. 1 to 120. Default = 60</param>
+			<param name="sampleThickness">Thickness of the sample in meters. 0 to 10e-3 m. Default = 0 m</param>
+			<param name="minimumHallVoltageSnr">The desired signal-to-noise ratio of the measurement calculated using average Hall voltage/error of mean 1 to 1000, or INFinity. Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastH.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double)">
+			<summary>Performs a FastHall™ measurement.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastH.StartLink(System.Double)">
+			<summary>Performs a FastHall™ measurement that uses the last run contact check measurement's excitation type, excitation range, compliance limit, blanking time, sampling time, and the largest absolute value of the start and end excitation values along with the last run resistivity measurement's resistivity average and sample thickness if available.  With Defaults</summary>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFastH.Result">
+			<summary>Reference to the IFastHallFastHResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFastH.Running">
+			<summary>Indicates if the FastHall™ measurement is running.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFastHResult">
+			<summary>IFastHallFastHResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFastHResult.JSON">
+			<summary>Reference to the IFastHallFastHResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFastHResult.Standard">
+			<summary>Reference to the IFastHallFastHResultStandard interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFastHResultJSON">
+			<summary>IFastHallFastHResultJSON interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultJSON.All">
+			<summary>Retrieves the results of the last run FastHall™ measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultJSON.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run FastHall™ measurement results serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultJSON.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run FastHall™ measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultJSON.Summary">
+			<summary>Retrieves summary results of the last run FastHall™ measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckResult">
+			<summary>IFastHallCCheckResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheckResult.JSON">
+			<summary>Reference to the IFastHallCCheckResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheckResult.Standard">
+			<summary>Reference to the IFastHallCCheckResultStandar interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckResultJSON">
+			<summary>IFastHallCCheckResultJSON interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultJSON.All">
+			<summary>Retrieves the results of the last run contact check measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultJSON.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run contact check measurement results serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultJSON.Data(System.Int32,System.Int32,System.Int32)">
+			<summary>Retrieves the results of a single point in the contact check measurement IV curve for a given contact pair.</summary>
+			<param name="contactPoint1">Contact pair point 1.</param>
+			<param name="contactPoint2">Contact pair point 2.</param>
+			<param name="curvePoint">IV curve point, zero indexed.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultJSON.Summary">
+			<summary>Retrieves summary results of the last run contact check measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultJSON.Diagnostics">
+			<summary>Retrieves optimization diagnostics of the last run contact check measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallAnalogInput">
+			<summary>IFastHallAnalogInput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallAnalogInput.InputFunction">
+			<summary>Queries the available settable modes for the analog input.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallAnalogInput.InputLevel">
+			<summary>Queries the level of the analog input.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallAnalogOutput">
+			<summary>IFastHallAnalogOutput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallAnalogOutput.OutputFunction">
+			<summary>Queries the available settable functions for the analog output.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallAnalogOutput.OutputSetting">
+			<summary>Sets or queries the level of the analog output.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckHBAR">
+			<summary>IFastHallCCheckHBAR interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckHBAR.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double)">
+			<summary>Performs a contact check measurement on contact pairs 5-6, 5-1, 5-2, 5-3, 5-4, and 6-1.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+			<param name="minimumRSquared">The minimum R² desired, Default = 0.9999.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample.  MINimum = 0.000001 s MAXimum = 1 s DEFault = 1/60 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckHBAR.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Int32)">
+			<summary>Performs a contact check measurement on contact pairs 5-6, 5-1, 5-2, 5-3, 5-4, and 6-1.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckVDP">
+			<summary>IFastHallCCheckVDP interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckVDP.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double)">
+			<summary>Performs a contact check measurement on contact pairs 1-2, 2-3, 3-4, and 4-1.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+			<param name="minimumRSquared">The minimum R² desired, Default = 0.9999.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.000001 s MAXimum = 1 s DEFault = 1/60 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckVDP.Optimize(System.Double,System.Double,System.Int32,System.Double,System.Double)">
+			<summary>Automatically determines excitation value and ranges. Then runs contact check on all 4 pairs.</summary>
+			<param name="maxCurrent">A 'not to exceed' output current value for the auto algorithm to use.  Minimum = 1 µA, Maximum = 100 mA, Default = 100 mA</param>
+			<param name="maxVoltage">A 'not to exceed' output voltage value for the auto algorithm to use.  Minimum = 1 V, Maximum = 10 V, Default = 10 V</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end.  Minimum = 2, Maximum = 100, Default = 11</param>
+			<param name="minimumRSquared">The minimum R² desired, Default = 0.9999.</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckVDP.Optimize">
+			<summary>Automatically determines excitation value and ranges. Then runs contact check on all 4 pairs.  Runs with all defaults</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckVDP.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Int32)">
+			<summary>Performs a contact check measurement on contact pairs 1-2, 2-3, 3-4, and 4-1.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValueStart">The starting excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationValueEnd">The ending excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="numberOfPoints">The number of points to measure between the excitation start and end. 0 - 100.</param>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDigitalInput">
+			<summary>IFastHallDigitalInput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDigitalInput.InputSetting">
+			<summary>Returns the bit-wise representation of the input states.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDigitalOutput">
+			<summary>IFastHallDigitalOutput interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDigitalOutput.OutputSetting">
+			<summary>Configures the output states.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFourWire">
+			<summary>IFastHallFourWire interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWire.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWire.Start(System.Int32,System.Int32,System.Int32,System.Int32,LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Boolean,System.Double)">
+			<summary>Performs a four wire measurement. Excitation is sourced from contact point 1 to contact point 2. Voltage is measured/senses between contact point 3 and contact point 4.</summary>
+			<param name="contactPoint1">Excitation +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 2.</param>
+			<param name="contactPoint2">Excitation -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 1.</param>
+			<param name="contactPoint3">Voltage measure/sense +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 4.</param>
+			<param name="contactPoint4">Voltage measure/sense -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 3.</param>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="excitationmeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="blankingTime">The time, in seconds, to wait for hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity. Default = 30</param>
+			<param name="excitationReversal">True = Reverse the excitation to generate the resistance. False = no excitation reversal</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWire.Start(System.Int32,System.Int32,System.Int32,System.Int32,LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Boolean)">
+			<summary>Performs a four wire measurement. Excitation is sourced from contact point 1 to contact point 2. Voltage is measured/senses between contact point 3 and contact point 4.  With Auto ranges and Defaults</summary>
+			<param name="contactPoint1">Excitation +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 2.</param>
+			<param name="contactPoint2">Excitation -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 1.</param>
+			<param name="contactPoint3">Voltage measure/sense +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 4.</param>
+			<param name="contactPoint4">Voltage measure/sense -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 3.</param>
+			<param name="excitationType"></param>
+			<param name="excitationValue">For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.00 to 10.0 V.</param>
+			<param name="excitationReversal">True = Reverse the excitation to generate the resistance. False = no excitation reversal</param>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFourWire.Result">
+			<summary>Reference to the IFastHallFastHResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFourWire.Running">
+			<summary>Indicates if the four wire measurement is running.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFourWireResult">
+			<summary>IFastHallFastHResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFourWireResult.JSON">
+			<summary>Reference to the IFastHallFastHResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFourWireResult.Standard">
+			<summary>Reference to the IFastHallFourWireResultStandard interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFourWireResultJSON">
+			<summary>IFastHallFastHResultJSON interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWireResultJSON.All">
+			<summary>Retrieves ALL the results, including individual samples, of the last run Four wire measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWireResultJSON.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run four wire measurement results serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWireResultJSON.Summary">
+			<summary>Retrieves summary results of the last run four wire measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDCHall">
+			<summary>IFastHallDCHall interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHall.Continue">
+			<summary>Continues the DC Hall measurement if it’s in a waiting state.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHall.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHall.HBAR">
+			<summary>Reference to the IFastHallDCHallHBAR interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHall.VDP">
+			<summary>Reference to the IFastHallDCHallVDP interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHall.Result">
+			<summary>Reference to the IFastHallDCHallResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHall.Running">
+			<summary>Indicates if the DC Hall measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHall.Waiting">
+			<summary>Indicates if the DC Hall measurement is waiting.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDCHallHBAR">
+			<summary>IFastHallDCHallHBAR interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallHBAR.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Boolean,System.Double,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a DC Hall measurement for a Hall bar sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+			<param name="resistivity">The resistivity of the sample in units of ohm*meters (bulk) of ohms per square (sheet). Used for calculations. Measure this value using the RESistivity SCPI subsystem. Defaults to not a number which will propagate through calculated values.  Default = NaN.  NOTE: When the resistivity is omitted or NaN, mobility is not calculated.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallHBAR.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Int32,System.Double,System.Boolean)">
+			<summary>Performs a DC Hall measurement for a Hall bar sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDCHallVDP">
+			<summary>IFastHallDCHallVDP interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallVDP.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Boolean,System.Double,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a DC Hall measurement for a van der Pauw sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+			<param name="resistivity">The resistivity of the sample in units of ohm*meters (bulk) of ohms per square (sheet). Used for calculations. Measure this value using the RESistivity SCPI subsystem. Defaults to not a number which will propagate through calculated values.  Default = NaN.  NOTE: When the resistivity is omitted or NaN, mobility is not calculated.</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallVDP.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Int32,System.Double,System.Boolean)">
+			<summary>Performs a DC Hall measurement for a van der Pauw sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity (9.9E+37), the total number of samples to average 1 - 1000 When minimumSnr is specified, the maximum number of samples to average 10 - 1000</param>
+			<param name="userDefinedFieldReadingInTesla">The field, in units of tesla, that the sample is being subjected to. Used for calculations.</param>
+			<param name="withFieldReversal">Specifies whether or not to apply reversal field. Default = true</param>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDCHallResult">
+			<summary>IFastHallDCHallResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHallResult.JSON">
+			<summary>Reference to the IFastHallDCHallResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHallResult.Standard">
+			<summary>Reference to the IFastHallDCHallResultStandard interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDCHallResultJSON">
+			<summary>IFastHallDCHallResultJSON interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultJSON.All">
+			<summary>Retrieves the results of the last run DC Hall measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultJSON.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run DC Hall measurement results, serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultJSON.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run DC Hall measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultJSON.Summary(System.Boolean)">
+			<summary>Retrieves summary results of the last run DC Hall measurement, serialized as JSON.</summary>
+			<param name="includeGeometries">Optional, include summary data for C and D geometries.  Defaults to False.</param>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallResistivity">
+			<summary>IFastHallResistivity interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivity.Reset">
+			<summary>Resets the measurement to a not run state, canceling any running measurement.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivity.HBAR">
+			<summary>Reference to the IFastHallResistivityHBAR interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivity.Result">
+			<summary>Reference to the IFastHallResistivityResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivity.Running">
+			<summary>Indicates if the resistivity measurement is running.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivity.VDP">
+			<summary>Reference to the IFastHallResistivityVDP interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallResistivityHBAR">
+			<summary>IFastHallResistivityHBAR interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityHBAR.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement on a Hall bar sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="width">The width of the sample in meters. Greater than 0.</param>
+			<param name="seperation">The distance between the sample’s arms in meters.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100 .</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityHBAR.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement on a Hall bar sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="width">The width of the sample in meters. Greater than 0.</param>
+			<param name="seperation">The distance between the sample’s arms in meters.</param>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallResistivityResult">
+			<summary>IFastHallResistivityResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivityResult.JSON">
+			<summary>Reference to the IFastHallResistivityResultJSON interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivityResult.Standard">
+			<summary>Reference to the IFastHallResistivityResultStandard interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallResistivityResultJSON">
+			<summary>IFastHallResistivityResultJSON interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultJSON.All">
+			<summary>Retrieves all of the results of the last run resistivity measurement, serialized as JSON, including raw samples.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultJSON.Substring(System.Int32,System.Int32)">
+			<summary>Retrieves a substring of the last run resistivity measurement results, serialized as JSON.</summary>
+			<param name="startIndex">The substring starting index, zero based.</param>
+			<param name="length">The number of characters to return.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultJSON.Data(System.Int32)">
+			<summary>Retrieves the resistivity and F value of both geometries A and B along with all measurements for a given sample.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultJSON.Summary">
+			<summary>Retrieves summary results of the last run resistivity measurement, serialized as JSON.</summary>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallResistivityVDP">
+			<summary>IFastHallResistivityVDP interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityVDP.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32,System.Double,System.Double,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement for a van der Pauw sample.</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="excitationRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="excitationMeasurementRange">For voltage excitation 0 to 10.0 V.  For current excitation 0 to 100 e-3 A.</param>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000.  Default = 100 .</param>
+			<param name="blankingTime">The time in seconds to wait for the hardware to settle before gathering readings.  0.5 ms to 300 s with a resolution of 0.1 ms.  Default = 2 ms, Minimum = 0.5 ms, Maximum = 300 s</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="samplingTime">The sampling time in seconds which measurements will be averaged over to get one sample. MINimum = 0.001 s MAXimum = 1 s</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityVDP.StartLink(System.Double,System.Double,System.Double,System.Int32)">
+			<summary>Performs a resistivity measurement (for a van der Pauw sample) that uses the last run contact check measurement's excitation type, compliance limit, blanking time, excitation range, and the largest absolute value of the start and end excitation values.</summary>
+			<param name="measurementRange">For voltage excitation, specify the current measurement range 0 to 100 e-3 A.  For current excitation, specify the voltage measurement range 0 to 10.0 V.</param>
+			<param name="sampleThickness">Thickness of the sample in meters.  Valid Range of 0 to 10e-3 m.  Default = 0 m</param>
+			<param name="minimumSnr">The desired signal-to-noise ratio of the measured resistance, calculated using measurement average/error of mean 1 - 1000, or INFinity.  Default = 30</param>
+			<param name="maxNumberOfSamples">When minimumSnr is omitted or INFinity, the total number of samples to average 1 to 1000.  When minimumSnr is specified, the maximum number of samples to average 10 to 1000. Default = 100</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityVDP.Start(LakeShoreCryotronics.FastHall.ExcitationType,System.Double,System.Double)">
+			<summary>Performs a resistivity measurement for a van der Pauw sample.  With Auto ranges and Defaults</summary>
+			<param name="excitationType"></param>
+			<param name="excitationValue">The excitation value.  For voltage excitation -10.0 to 10.0 V.  For current excitation -100 e3 to 100 e-3 A.</param>
+			<param name="complianceLimit">For voltage excitation, specify the current limit 100 e-9 to 100 e-3 A.  For current excitation, specify the voltage compliance 1.0 to 10.0 V.</param>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityVDP.StartLink">
+			<summary>Performs a resistivity measurement (for a van der Pauw sample) that uses the last run contact check measurement's excitation type, compliance limit, blanking time, excitation range, and the largest absolute value of the start and end excitation values.  With Auto ranges and Defaults</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallSystemBeeper">
+			<summary>IFastHallSystemBeeper interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystemBeeper.Volume">
+			<summary>Sets/gets the volume of the instruments internal speakers.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallStatus">
+			<summary>IFastHallStatus interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatus.Operation">
+			<summary>Reference to the IFastHallStatusOperation interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallStatusOperation">
+			<summary>IFastHallStatusOperation interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallStatusOperation.Preset">
+			<summary>Initializes the values of the Operation Status register and Questionable Status register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperation.Condition">
+			<summary>Gets the value of the Operation Status Condition Register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperation.Enable">
+			<summary>Sets/gets the value of the Operation Status enable register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperation.Event">
+			<summary>This queries the operation status event register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperation.Questionable">
+			<summary>Reference to the IFastHallStatusOperationQuestionable interface.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallStatusOperationQuestionable">
+			<summary>IFastHallStatusOperationQuestionable interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperationQuestionable.Condition">
+			<summary>Sets/gets the value of the Questionable Status Condition Register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperationQuestionable.Enable">
+			<summary>Sets/gets the value of the Questionable Status enable register.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallStatusOperationQuestionable.Event">
+			<summary>This queries the Questionable status event register.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallSystemError">
+			<summary>IFastHallSystemError interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallSystemError.Clear">
+			<summary>Clears all errors in the queue.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystemError.All">
+			<summary>Returns a comma seperated list of all errors in the queue and removes them.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystemError.Count">
+			<summary>Returns the count of errors in the queue.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallSystemError.Next">
+			<summary>Returns the next error in the internal buffer and removes it.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFourWireResultStandard">
+			<summary>IFastHallFourWireResultStandard interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFourWireResultStandard.Summary">
+			<summary>Retrieves the results of the last run four wire measurement.</summary>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckResultStandard">
+			<summary>IFastHallCCheckResultStandard interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultStandard.Data(System.Int32,System.Int32,System.Int32)">
+			<summary>Retrieves the results of a single point in the contact check measurement IV curve for a given contact pair.</summary>
+			<param name="contactPoint1">Contact pair point 1</param>
+			<param name="contactPoint2">Contact pair point 2</param>
+			<param name="curvePoint">IV curve point, zero indexed</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultStandard.ASetup">
+			<summary>Retrieves the last run contact check measurement’s auto optimizationSetup.</summary>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckResultStandard.Summary">
+			<summary>Retrieves the results of the last run contact check measurement.</summary>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallFastHResultStandard">
+			<summary>IFastHallFastHResultStandard interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultStandard.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run FastHall™ measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultStandard.Raw(System.Int32)">
+			<summary>Retrieves the excitation setpoint, measured current, measured voltage, and compliance status for negative and positive excitations in both negative and positive field configurations from a given sample taken during the last run FastHall™ measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallFastHResultStandard.Summary">
+			<summary>Retrieves the results of the last run FastHall™ measurement.</summary>
+			<returns />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallFastHResultStandard.Points">
+			<summary>Retrieves the number of points in the results list. Use in conjunction with FASThall:RESult[:STANdard]:DATA? and FASThall:RESult[:STANdard]:RAW? queries.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallDCHallResultStandard">
+			<summary>IFastHallDCHallResultStandard interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultStandard.Data(System.Int32)">
+			<summary>Retrieves data from a given sample taken during the last run DC Hall measurement.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultStandard.Raw(System.Int32,LakeShoreCryotronics.FastHall.Geometry)">
+			<summary>Retrieves the measured current, measured voltage, and compliance status for negative and positive excitations in both negative and positive field configurations from a given sample taken during the last run DC Hall measurement.  NOTE: If the measurement did not include field reversal, then 'negative field' parameters will not be returned.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<param name="geometry">The geometry, C or D</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallDCHallResultStandard.Summary">
+			<summary>Retrieves the results of the last run DC Hall measurement.</summary>
+			<returns />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallDCHallResultStandard.Points">
+			<summary>Retrieves the number of points in the results list. Use in conjunction with HALl[:DC]:RESult[:STANdard]:DATA? and HALl[:DC]:RESult[:STANdard]:RAW? queries</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallResistivityResultStandard">
+			<summary>IFastHallResistivityResultStandard interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultStandard.Data(System.Int32)">
+			<summary>Retrieves the resistivity and F value of both geometries A and B for a given sample.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultStandard.Raw(System.Double,LakeShoreCryotronics.FastHall.ContactConfig)">
+			<summary>Retrieves the measured voltage, current, and calculated current reversed resistance for a given contact configuration and sample.</summary>
+			<param name="sampleIndex">Sample index, zero based.</param>
+			<param name="contactConfiguration">van der Pauw: R2134, R3241, R4312, or R1423; Hall bar: R5614 or R5623</param>
+			<returns />
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallResistivityResultStandard.Summary">
+			<summary>Retrieves the results of the last run resistivity measurement.</summary>
+			<returns />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallResistivityResultStandard.Points">
+			<summary>Retrieves the number of points in the results list. Use in conjunction with RESistivity:RESult[:STANdard]:DATA? and RESistivity:RESult[:STANdard]:RAW? queries.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckBlanking">
+			<summary>IFastHallCCheckBlanking interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckBlanking.Reset">
+			<summary>Cancels any running blanking time calculations.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckBlanking.Start(System.Int32,System.Int32,System.Int32,System.Int32)">
+			<summary>Calculates the optimal blanking time for a contact check on this sample.</summary>
+			<param name="contactPoint1">Excitation +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 2.</param>
+			<param name="contactPoint2">Excitation -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 1.</param>
+			<param name="contactPoint3">Voltage measure/sense +. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 4.</param>
+			<param name="contactPoint4">Voltage measure/sense -. Valid contact points are: 1, 2, 3, 4, 5, or 6. Cannot be the same as Contact Point 3.</param>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheckBlanking.Result">
+			<summary>Reference to the IFastHallCCheckBlankingResult interface.</summary>
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.IFastHallCCheckBlanking.Running">
+			<summary>Indicates if the standalone blanking time calculation is running.</summary>
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.IFastHallCCheckBlankingResult">
+			<summary>IFastHallCCheckBlankingResult interface.</summary>
+		</member>
+		<member name="M:LakeShoreCryotronics.FastHall.IFastHallCCheckBlankingResult.JSON(System.Boolean)">
+			<summary>Returns the JSON results of calculating the optimal blanking time.</summary>
+			<param name="pretty">Optional, pretty format JSON response. Defaults to False.</param>
+			<returns />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.FWSummary">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.StartDateTime">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.DurationInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ContactPairPoint1">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ContactPairPoint2">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ContactPairPoint3">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ContactPairPoint4">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ExcitationType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ExcitationValue">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ExcitationRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.MeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ExcitationMeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ComplianceLimit">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.BlankingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.MaximumNumberOfSamples">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.MinimumResistanceSnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.UseExcitationReversal">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ResistanceAverageInOhms">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.ResistanceStandardErrorInOhms">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.VoltageAverageInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.VoltageStandardErrorInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.CurrentAverageInAmps">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.CurrentStandardErrorInAmps">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FWSummary.SamplingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.CCData">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCData.ExcitationType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCData.ExcitationValue">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCData.Voltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCData.Current">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCData.Resistance">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.CCASetup">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCASetup.AutoEnabled">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCASetup.MaxCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCASetup.MaxVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCASetup.MaxPoints">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCASetup.MinimumRSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCASetup.SamplingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.CCSummary">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.StartDateTime">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.DurationInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ExcitationType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ExcitationValueStart">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ExcitationValueEnd">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ExcitationRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.MeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ComplianceLimit">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.NumberOfPoints">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.MinimumRSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.BlankingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairAOffset">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairASlope">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairARSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairARSquaredPassed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairBOffset">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairBSlope">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairBRSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairBRSquaredPassed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairCOffset">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairCSlope">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairCRSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairCRSquaredPassed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairDOffset">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairDSlope">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairDRSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairDRSquaredPassed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairEOffset">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairESlope">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairERSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairERSquaredPassed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairFOffset">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairFSlope">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairFRSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.ContactPairFRSquaredPassed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.CCSummary.SamplingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.FHData">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.HallVoltageInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.HallCoefficientInMetersCubedPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.SheetHallCoefficientInMetersSquaredPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.CarrierType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.CarrierConcentrationPerMetersCubed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.SheetCarrierConcentrationPerMetersSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.MobilityInMetersSquaredPerVoltSecond">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.FieldReadingInTesla">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHData.CurrentAverageInAmps">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.FHRaw">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.NegativeFieldConfigurationNegativeExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.NegativeFieldConfigurationNegativeExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.NegativeFieldConfigurationNegativeExcitationVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.NegativeFieldConfigurationPositiveExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.NegativeFieldConfigurationPositiveExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.NegativeFieldConfigurationPositiveExcitationVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.PositiveFieldConfigurationNegativeExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.PositiveFieldConfigurationNegativeExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.PositiveFieldConfigurationNegativeExcitationVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.PositiveFieldConfigurationPositiveExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.PositiveFieldConfigurationPositiveExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHRaw.PositiveFieldConfigurationPositiveExcitationVoltage">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.FHSummary">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.StartDateTime">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.DurationInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.ExcitationType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.ExcitationValue">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.ExcitationRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.ExcitationMeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.MeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.ComplianceLimit">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.MaxNumberOfSamples">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.UserDefinedFieldReading">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.Resistivity">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.BlankingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.NumberOfVoltageCompensationSamplesToAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.SampleThicknessInMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.MinimumHallVoltageSnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.HallVoltageAverageInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.HallVoltageStandardErrorInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.HallVoltageSnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.CarrierType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.PTypeCount">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.NTypeCount">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.CarrierConcentrationAveragePerMetersCubed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.SheetCarrierConcentrationAveragePerMetersSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.CarrierConcentrationStandardErrorPerMetersCubed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.SheetCarrierConcentrationStandardErrorPerMetersSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.HallCoefficientAverageInMetersCubedPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.SheetHallCoefficientAverageInMetersSquaredPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.HallCoefficientStandardErrorInMetersCubedPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.SheetHallCoefficientStandardErrorInMetersSquaredPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.MobilityAverageInMetersSquaredPerVoltSecond">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.MobilityStandardErrorInMetersSquaredPerVoltSecond">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.FHSummary.SamplingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.DCData">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.HallVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.GeometryCHallVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.GeometryDHallVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.CurrentAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.GeometryCCurrentAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.GeometryDCurrentAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCData.CarrierType">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.DCRaw">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.NegativeFieldConfigurationNegativeExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.NegativeFieldConfigurationNegativeExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.NegativeFieldConfigurationNegativeExcitationVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.NegativeFieldConfigurationPositiveExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.NegativeFieldConfigurationPositiveExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.NegativeFieldConfigurationPositiveExcitationVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.PositiveFieldConfigurationNegativeExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.PositiveFieldConfigurationNegativeExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.PositiveFieldConfigurationNegativeExcitationVoltage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.PositiveFieldConfigurationPositiveExcitationSetpoint">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.PositiveFieldConfigurationPositiveExcitationCurrent">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCRaw.PositiveFieldConfigurationPositiveExcitationVoltage">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.DCSummary">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.StartDateTime">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.DurationInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.ExcitationType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.ExcitationValue">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.ExcitationRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.ExcitationMeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.MeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.ComplianceLimit">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.MaxNumberOfSamples">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.UserDefinedFieldReading">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.Resistivity">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.BlankingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.SampleThicknessInMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.HallVoltageAverageInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.HallVoltageStandardErrorInVolts">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.CarrierType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.PTypeCount">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.NTypeCount">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.CarrierConcentrationAveragePerMetersCubed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.SheetCarrierConcentrationAveragePerMetersSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.CarrierConcentrationStandardErrorPerMetersCubed">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.SheetCarrierConcentrationStandardErrorPerMetersSquared">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.HallCoefficientAverageInMetersCubedPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.SheetHallCoefficientAverageInMetersSquaredPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.HallCoefficientStandardErrorInMetersCubedPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.SheetHallCoefficientStandardErrorInMetersSquaredPerCoulomb">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.MobilityAverageInMetersSquaredPerVoltSecond">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.MobilityStandardErrorInMetersSquaredPerVoltSecond">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.SamplingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.MinimumSnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.DCHallSnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.DCSummary.WithFieldReversal">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.RESData">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.ResistivityInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.SheetResistivityInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.GeometryAResistivityInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.GeometryASheetResistivityInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.GeometryAFValueAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.GeometryBResistivityInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.GeometryBSheetResistivityInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESData.GeometryBFValueAverage">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.RESRaw">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESRaw.MeasuredVoltagePositive">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESRaw.MeasuredCurrentPositive">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESRaw.MeasuredVoltageNegative">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESRaw.MeasuredCurrentNegative">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESRaw.CurrentReversedResistance">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.RESSummary">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.StartDateTime">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.DurationInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ExcitationType">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ExcitationValue">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ExcitationRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ExcitationMeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.MeasurementRange">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ComplianceLimit">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.BlankingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.MinimumSnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.MaxNumberOfSamples">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.SampleThicknessInMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ResistivityAverageInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.SheetResistivityAverageInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ResistivityStandardErrorInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.SheetResistivityStandardErrorInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.ResistivitySnr">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryAResistivityAverageInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryASheetResistivityAverageInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryAResistivityStandardErrorInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryASheetResistivityStandardErrorInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryAFValueAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryBResistivityAverageInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryBSheetResistivityAverageInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryBResistivityStandardErrorInOhmMeters">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryBSheetResistivityStandardErrorInOhmsPerSquare">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.GeometryBFValueAverage">
+			<summary />
+		</member>
+		<member name="P:LakeShoreCryotronics.FastHall.RESSummary.SamplingTimeInSeconds">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.AIFunction">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.AIFunction.Manual">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.AOFunction">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.AOFunction.Manual">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.ExcitationType">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ExcitationType.Voltage">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ExcitationType.Current">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.Carrier">
+			<summary>The carrier type of the sample. P, N, or Unknown.</summary>
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.Carrier.P">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.Carrier.N">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.Carrier.Unknown">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.Geometry">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.Geometry.C">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.Geometry.D">
+			<summary />
+		</member>
+		<member name="T:LakeShoreCryotronics.FastHall.ContactConfig">
+			<summary>van der Pauw: R2134, R3241, R4312, or R1423  Hall bar: R5614 or R5623</summary>
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ContactConfig.R2134">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ContactConfig.R3241">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ContactConfig.R4312">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ContactConfig.R1423">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ContactConfig.R5614">
+			<summary />
+		</member>
+		<member name="F:LakeShoreCryotronics.FastHall.ContactConfig.R5623">
+			<summary />
+		</member>
+	</members>
+</doc>
