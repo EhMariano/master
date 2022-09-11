@@ -179,7 +179,7 @@ namespace StaowiskoApp
         }
         private void buttonGetBackingSequence_Click(object sender, EventArgs e)
         {
-
+            //
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
